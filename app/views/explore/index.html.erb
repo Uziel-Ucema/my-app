@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Images from Google Cloud Storage</title>
+    <!-- Add the Bootstrap CSS link -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Images from Google Cloud Storage</h1>
+        <div class="row mt-4" id="imageContainer"></div>
+    </div>
+
+    <script>
+        fetch('https://www.googleapis.com/storage/v1/b/primero1023/o?delimiter=/&prefix=&projection=full&fields=items(name,mediaLink,timeCreated)')
+            .then(response => response.json())
+            .then(data => {
+                const imageContainer = document.getElementById('imageContainer');
+
+                // Clear existing content inside the imageContainer
+                imageContainer.innerHTML = '';
+
+                data.items.forEach(item => {
+                    if (item.name.endsWith('.jpg')) { // Only display JPG files
+                        const col = document.createElement('div');
+                        col.classList.add('col-md-4', 'mb-4');
+
+                        const img = document.createElement('img');
+                        img.src = item.mediaLink; // The URL of the image in the bucket.
+                        img.classList.add('img-fluid');
+                        col.appendChild(img);
+
+                        const name = document.createElement('p');
+                        const imageName = item.name.replace('.jpg', ''); // Remove the file extension
+                        name.innerText = 'Image Name: ' + imageName;
+                        col.appendChild(name);
+
+                        const date = document.createElement('p');
+                        const submissionDate = new Date(item.timeCreated).toDateString(); // Format the date
+                        date.innerText = 'Submitted Date: ' + submissionDate;
+                        col.appendChild(date);
+
+                        imageContainer.appendChild(col);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching images: ', error);
+            });
+    </script>
+</body>
+</html>
