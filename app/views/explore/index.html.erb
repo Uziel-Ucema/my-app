@@ -2,50 +2,118 @@
 <html>
 <head>
     <title>Images from Google Cloud Storage</title>
-    <!-- Add the Bootstrap CSS link -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px #ccc;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .folder {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .folder h2 {
+            font-size: 24px;
+        }
+
+        .image-col {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .image-col img {
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .image-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-5">Images from Google Cloud Storage</h1>
-        <div class="row mt-4" id="imageContainer"></div>
+        <div id="imageContainer" class="row"></div>
     </div>
 
     <script>
-        fetch('https://www.googleapis.com/storage/v1/b/primero1023/o?delimiter=/&prefix=&projection=full&fields=items(name,mediaLink,timeCreated)')
+        // Replace 'YOUR_BUCKET_NAME' with the actual bucket name
+        const bucketName = 'primero1023';
+        const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
+
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 const imageContainer = document.getElementById('imageContainer');
 
-                // Clear existing content inside the imageContainer
-                imageContainer.innerHTML = '';
+                const itemsByFolder = {};
 
                 data.items.forEach(item => {
-                    if (item.name.endsWith('.jpg')) { // Only display JPG files
-                        const col = document.createElement('div');
-                        col.classList.add('col-md-4', 'mb-4');
+                    const pathSegments = item.name.split('/');
+                    const folderName = pathSegments[0];
 
-                        const img = document.createElement('img');
-                        img.src = item.mediaLink; // The URL of the image in the bucket.
-                        img.classList.add('img-fluid');
-                        col.appendChild(img);
-
-                        const name = document.createElement('p');
-                        const imageName = item.name.replace('.jpg', ''); // Remove the file extension
-                        name.innerText = 'Image Name: ' + imageName;
-                        col.appendChild(name);
-
-                        const date = document.createElement('p');
-                        const submissionDate = new Date(item.timeCreated).toDateString(); // Format the date
-                        date.innerText = 'Submitted Date: ' + submissionDate;
-                        col.appendChild(date);
-
-                        imageContainer.appendChild(col);
+                    if (!itemsByFolder[folderName]) {
+                        itemsByFolder[folderName] = [];
                     }
+
+                    itemsByFolder[folderName].push(item);
                 });
+
+                for (const folderName in itemsByFolder) {
+                    if (itemsByFolder.hasOwnProperty(folderName)) {
+                        const folderSection = document.createElement('div');
+                        folderSection.classList.add('folder');
+                        folderSection.innerHTML = `<h2>${folderName}</h2>`;
+                        imageContainer.appendChild(folderSection);
+
+                        itemsByFolder[folderName].forEach(item => {
+                            if (item.contentType === 'image/jpeg') {
+                                const col = document.createElement('div');
+                                col.classList.add('col-md-4', 'image-col');
+
+                                const img = document.createElement('img');
+                                img.src = item.mediaLink; // The URL of the image in the bucket.
+                                img.classList.add('img-fluid');
+                                col.appendChild(img);
+
+                                const imageInfo = document.createElement('div');
+                                imageInfo.classList.add('image-info');
+                                
+                                const name = document.createElement('p');
+                                name.innerText = 'Image Name: ' + item.name;
+                                imageInfo.appendChild(name);
+
+                                const date = document.createElement('p');
+                                date.innerText = 'Submitted Date: ' + new Date(item.timeCreated).toDateString();
+                                imageInfo.appendChild(date);
+
+                                col.appendChild(imageInfo);
+
+                                folderSection.appendChild(col);
+                            }
+                        });
+                    }
+                }
             })
             .catch(error => {
-                console.error('Error fetching images: ', error);
+                console.error('Error fetching data: ', error);
             });
     </script>
 </body>
