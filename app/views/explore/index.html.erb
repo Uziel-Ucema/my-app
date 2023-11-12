@@ -45,11 +45,42 @@
             margin: 5px 0;
             font-size: 16px;
         }
+
+        /* New styles for the alert subscription section */
+        .alert-subscription {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .save-changes-btn {
+            margin-top: 10px;
+        }
+
+        .folder-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .folder-list-item {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-5">Images from Google Cloud Storage</h1>
+
+        <% if user_signed_in? %>
+        <div class="alert-subscription">
+            <h2>Alert Subscription</h2>
+            <ul id="folderChecklist" class="folder-list"></ul>
+            <button class="btn btn-primary save-changes-btn">Save Changes</button>
+        </div>
+        <% end %>
         <div id="imageContainer" class="row"></div>
     </div>
 
@@ -58,6 +89,46 @@
         const bucketName = 'primero1023';
         const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
 
+        // Fetching folder titles
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const folderChecklist = document.getElementById('folderChecklist');
+
+                const folderTitles = data.items.reduce((titles, item) => {
+                    const pathSegments = item.name.split('/');
+                    const folderName = pathSegments[0];
+
+                    if (!titles.includes(folderName)) {
+                        titles.push(folderName);
+                    }
+
+                    return titles;
+                }, []);
+
+                folderTitles.forEach(title => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('folder-list-item');
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = title;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = title;
+                    label.textContent = title;
+
+                    listItem.appendChild(checkbox);
+                    listItem.appendChild(label);
+
+                    folderChecklist.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching folder data: ', error);
+            });
+
+        // Fetching image data
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -81,7 +152,9 @@
                         const folderSection = document.createElement('div');
                         folderSection.classList.add('folder');
                         folderSection.innerHTML = `<h2>${folderName}</h2>`;
-                        imageContainer.appendChild(folderSection);
+
+                        const row = document.createElement('div');
+                        row.classList.add('row');
 
                         itemsByFolder[folderName].forEach(item => {
                             if (item.contentType === 'image/jpeg') {
@@ -106,14 +179,17 @@
 
                                 col.appendChild(imageInfo);
 
-                                folderSection.appendChild(col);
+                                row.appendChild(col);
                             }
                         });
+
+                        folderSection.appendChild(row);
+                        imageContainer.appendChild(folderSection);
                     }
                 }
             })
             .catch(error => {
-                console.error('Error fetching data: ', error);
+                console.error('Error fetching image data: ', error);
             });
     </script>
 </body>
