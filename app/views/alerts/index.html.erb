@@ -1,131 +1,35 @@
-<% if user_signed_in? %>
-    <div class="alert-subscription">
-        <h2>Alert Subscription</h2>
-        <ul id="folderChecklist" class="folder-list"></ul>
-        <button class="btn btn-primary save-changes-btn">Save Changes</button>
-    </div>
-<% end %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Alert Subscriptions</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
 
-<script>
-  const bucketName = 'primero1023';
-  const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
+  <div class="container">
+    <h1 class="mt-4">Alert Subscriptions</h1>
 
-  function fetchFolderData() {
-    return fetch(apiUrl, {
-      headers: {
-        'Cache-Control': 'max-age=86400',
-      },
-    }).then(response => response.json());
-  }
+    <form action="/save_changes" method="post">
+      <div class="row">
+        <% @folders.each do |folder| %>
+          <div class="col-md-4">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="<%= folder.id %>" name="folders[]" value="<%= folder.id %>" />
+              <label class="form-check-label" for="<%= folder.id %>"><%= folder.name %></label>
+            </div>
+          </div>
+        <% end %>
+      </div>
 
-  function extractFolderTitles(data) {
-    return data.items.reduce((titles, item) => {
-      const pathSegments = item.name.split('/');
-      const folderName = pathSegments[0];
+      <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    </form>
+  </div>
 
-      if (!titles.includes(folderName)) {
-        titles.push(folderName);
-      }
-
-      return titles;
-    }, []);
-  }
-
-  function renderFolderChecklist(folderTitles) {
-    const folderChecklist = document.getElementById('folderChecklist');
-
-    folderTitles.forEach(title => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('folder-list-item');
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = title;
-
-      const label = document.createElement('label');
-      label.htmlFor = title;
-      label.textContent = title;
-
-      listItem.appendChild(checkbox);
-      listItem.appendChild(label);
-
-      folderChecklist.appendChild(listItem);
-    });
-  }
-
-  function handleFetchError(error) {
-    console.error('Error fetching folder data: ', error);
-  }
-
-  fetchFolderData()
-    .then(data => {
-      const folderTitles = extractFolderTitles(data);
-      renderFolderChecklist(folderTitles);
-    })
-    .catch(handleFetchError);
-</script>
-
-<script>
-  const bucketName = 'primero1023';
-  const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
-
-  async function fetchFolderData() {
-    const response = await fetch(apiUrl, {
-      headers: {
-        'Cache-Control': 'max-age=86400',
-      },
-    });
-    return response.json();
-  }
-
-  function extractFolderTitles(data) {
-    return data.items.reduce((titles, item) => {
-      const pathSegments = item.name.split('/');
-      const folderName = pathSegments[0];
-
-      if (!titles.includes(folderName)) {
-        titles.push(folderName);
-      }
-
-      return titles;
-    }, []);
-  }
-
-  function renderFolderChecklist(folderTitles) {
-    const folderChecklist = document.getElementById('folderChecklist');
-
-    folderTitles.forEach(title => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('folder-list-item');
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = title;
-
-      const label = document.createElement('label');
-      label.htmlFor = title;
-      label.textContent = title;
-
-      listItem.appendChild(checkbox);
-      listItem.appendChild(label);
-
-      folderChecklist.appendChild(listItem);
-    });
-  }
-
-  function handleFetchError(error) {
-    console.error('Error fetching folder data: ', error);
-  }
-
-  async function initialize() {
-    try {
-      const data = await fetchFolderData();
-      const folderTitles = extractFolderTitles(data);
-      renderFolderChecklist(folderTitles);
-    } catch (error) {
-      handleFetchError(error);
-    }
-  }
-
-  initialize();
-</script>
+  <!-- Add Bootstrap JS and Popper.js scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
