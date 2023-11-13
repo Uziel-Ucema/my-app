@@ -3,10 +3,13 @@ class AlertsController < ApplicationController
     def index
         @folders = Folder.all
     end
-    
-    # Other actions...
-    
+        
     def save_changes
-        # Handle the logic to save changes here
+        selected_folder_ids = params[:folders]
+        current_user.folders = Folder.find(selected_folder_ids)
+        # Update the associations based on the selected_folder_ids
+    
+        # Assuming you have a redirect or render logic
+        redirect_to alerts_path, notice: 'Changes saved successfully!'
     end
 end
