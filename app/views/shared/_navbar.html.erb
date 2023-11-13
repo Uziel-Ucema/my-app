@@ -15,6 +15,11 @@
                 <li class="nav-item">
                     <%= link_to "Explore", explore_path, class: "nav-link" %>
                 </li>
+                <% if user_signed_in? %>
+                <li class="nav-item">
+                    <%= link_to "Alerts", alerts_path, class: "nav-link" %>
+                </li>
+                <% end %>
             </ul>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

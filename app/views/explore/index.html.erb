@@ -73,124 +73,99 @@
 <body>
     <div class="container">
         <h1 class="mt-5">Images from Google Cloud Storage</h1>
-
-        <% if user_signed_in? %>
-        <div class="alert-subscription">
-            <h2>Alert Subscription</h2>
-            <ul id="folderChecklist" class="folder-list"></ul>
-            <button class="btn btn-primary save-changes-btn">Save Changes</button>
-        </div>
-        <% end %>
         <div id="imageContainer" class="row"></div>
     </div>
 
     <script>
-        // Replace 'YOUR_BUCKET_NAME' with the actual bucket name
-        const bucketName = 'primero1023';
-        const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
-
-        // Fetching folder titles
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const folderChecklist = document.getElementById('folderChecklist');
-
-                const folderTitles = data.items.reduce((titles, item) => {
-                    const pathSegments = item.name.split('/');
-                    const folderName = pathSegments[0];
-
-                    if (!titles.includes(folderName)) {
-                        titles.push(folderName);
-                    }
-
-                    return titles;
-                }, []);
-
-                folderTitles.forEach(title => {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('folder-list-item');
-
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = title;
-
-                    const label = document.createElement('label');
-                    label.htmlFor = title;
-                    label.textContent = title;
-
-                    listItem.appendChild(checkbox);
-                    listItem.appendChild(label);
-
-                    folderChecklist.appendChild(listItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching folder data: ', error);
-            });
-
-        // Fetching image data
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const imageContainer = document.getElementById('imageContainer');
-
-                const itemsByFolder = {};
-
-                data.items.forEach(item => {
-                    const pathSegments = item.name.split('/');
-                    const folderName = pathSegments[0];
-
-                    if (!itemsByFolder[folderName]) {
-                        itemsByFolder[folderName] = [];
-                    }
-
-                    itemsByFolder[folderName].push(item);
-                });
-
-                for (const folderName in itemsByFolder) {
-                    if (itemsByFolder.hasOwnProperty(folderName)) {
-                        const folderSection = document.createElement('div');
-                        folderSection.classList.add('folder');
-                        folderSection.innerHTML = `<h2>${folderName}</h2>`;
-
-                        const row = document.createElement('div');
-                        row.classList.add('row');
-
-                        itemsByFolder[folderName].forEach(item => {
-                            if (item.contentType === 'image/jpeg') {
-                                const col = document.createElement('div');
-                                col.classList.add('col-md-4', 'image-col');
-
-                                const img = document.createElement('img');
-                                img.src = item.mediaLink; // The URL of the image in the bucket.
-                                img.classList.add('img-fluid');
-                                col.appendChild(img);
-
-                                const imageInfo = document.createElement('div');
-                                imageInfo.classList.add('image-info');
-                                
-                                const name = document.createElement('p');
-                                name.innerText = 'Image Name: ' + item.name;
-                                imageInfo.appendChild(name);
-
-                                const date = document.createElement('p');
-                                date.innerText = 'Submitted Date: ' + new Date(item.timeCreated).toDateString();
-                                imageInfo.appendChild(date);
-
-                                col.appendChild(imageInfo);
-
-                                row.appendChild(col);
-                            }
-                        });
-
-                        folderSection.appendChild(row);
-                        imageContainer.appendChild(folderSection);
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching image data: ', error);
-            });
-    </script>
-</body>
-</html>
+    const bucketName = 'primero1023';
+    const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
+  
+    async function fetchImageData() {
+      const response = await fetch(apiUrl);
+      return response.json();
+    }
+  
+    function groupItemsByFolder(data) {
+      const itemsByFolder = {};
+  
+      data.items.forEach(item => {
+        const pathSegments = item.name.split('/');
+        const folderName = pathSegments[0];
+  
+        if (!itemsByFolder[folderName]) {
+          itemsByFolder[folderName] = [];
+        }
+  
+        itemsByFolder[folderName].push(item);
+      });
+  
+      return itemsByFolder;
+    }
+  
+    function createImageElement(item) {
+      const col = document.createElement('div');
+      col.classList.add('col-md-4', 'image-col');
+  
+      const img = document.createElement('img');
+      img.src = item.mediaLink; // The URL of the image in the bucket.
+      img.classList.add('img-fluid');
+      col.appendChild(img);
+  
+      const imageInfo = document.createElement('div');
+      imageInfo.classList.add('image-info');
+  
+      const name = document.createElement('p');
+      name.innerText = 'Image Name: ' + item.name;
+      imageInfo.appendChild(name);
+  
+      const date = document.createElement('p');
+      date.innerText = 'Submitted Date: ' + new Date(item.timeCreated).toDateString();
+      imageInfo.appendChild(date);
+  
+      col.appendChild(imageInfo);
+  
+      return col;
+    }
+  
+    function renderImagesByFolder(itemsByFolder) {
+      const imageContainer = document.getElementById('imageContainer');
+  
+      for (const folderName in itemsByFolder) {
+        if (itemsByFolder.hasOwnProperty(folderName)) {
+          const folderSection = document.createElement('div');
+          folderSection.classList.add('folder');
+          folderSection.innerHTML = `<h2>${folderName}</h2>`;
+  
+          const row = document.createElement('div');
+          row.classList.add('row');
+  
+          itemsByFolder[folderName].forEach(item => {
+            if (item.contentType === 'image/jpeg') {
+              const col = createImageElement(item);
+              row.appendChild(col);
+            }
+          });
+  
+          folderSection.appendChild(row);
+          imageContainer.appendChild(folderSection);
+        }
+      }
+    }
+  
+    function handleImageFetchError(error) {
+      console.error('Error fetching image data: ', error);
+    }
+  
+    async function initialize() {
+      try {
+        const imageData = await fetchImageData();
+        const itemsByFolder = groupItemsByFolder(imageData);
+        renderImagesByFolder(itemsByFolder);
+      } catch (error) {
+        handleImageFetchError(error);
+      }
+    }
+  
+    initialize();
+</script>
+  
