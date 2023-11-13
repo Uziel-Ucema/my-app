@@ -7,3 +7,11 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Create a user with password
+user1 = User.create(email: 'as@gmail.com', password: 'asd')
+
+folder1 = Folder.create(name: 'Beagle')
+folder2 = Folder.create(name: 'Chihuahua')
+
+user1.folders << folder1

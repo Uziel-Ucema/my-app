@@ -18,11 +18,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_13_135436) do
   end
 
   create_table "folders_users", id: false, force: :cascade do |t|
-    t.string "email"
-    t.string "folder_name"
+    t.integer "user_id"
+    t.integer "folder_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email", "folder_name"], name: "index_folders_users_on_email_and_folder_name", unique: true
+    t.index ["folder_id"], name: "index_folders_users_on_folder_id"
+    t.index ["user_id", "folder_id"], name: "index_folders_users_on_user_id_and_folder_id", unique: true
+    t.index ["user_id"], name: "index_folders_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -32,4 +34,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_13_135436) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "folders_users", "folders"
+  add_foreign_key "folders_users", "users"
 end
