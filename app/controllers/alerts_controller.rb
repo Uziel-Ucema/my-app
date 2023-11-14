@@ -10,6 +10,6 @@ class AlertsController < ApplicationController
         # Update the associations based on the selected_folder_ids
     
         # Assuming you have a redirect or render logic
-        redirect_to alerts_path, notice: 'Changes saved successfully!'
+        redirect_to root_path, notice: 'Changes saved successfully!'
     end
 end

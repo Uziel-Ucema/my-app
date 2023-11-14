@@ -10,14 +10,14 @@
                     <%= link_to "Home", root_path, class: "nav-link" %>
                 </li>
                 <li class="nav-item">
-                    <%= link_to "About", about_path, class: "nav-link" %>
-                </li>
-                <li class="nav-item">
                     <%= link_to "Explore", explore_path, class: "nav-link" %>
                 </li>
                 <% if user_signed_in? %>
                 <li class="nav-item">
                     <%= link_to "Alerts", alerts_path, class: "nav-link" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to "Contact", contact_path, class: "nav-link" %>
                 </li>
                 <% end %>
             </ul>

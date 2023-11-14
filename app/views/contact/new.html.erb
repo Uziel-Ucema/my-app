@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Contact Us</h1>
+
+  <p class="lead mb-4">At PetConnect, we value all feedback. Your opinion matters to us. If you have any questions or suggestions, feel free to contact us using the form below.</p>
+
+  <%= form_with(model: @contact, url: contact_path, method: :post, class: "mb-5") do |form| %>
+    <div class="mb-3">
+      <%= form.label :email, class: "form-label" %>
+      <%= form.email_field :email, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+        <%= form.label :subject, class: "form-label" %>
+        <%= form.text_field :subject, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :message, class: "form-label" %>
+      <%= form.text_area :message, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.submit "Send Message", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
