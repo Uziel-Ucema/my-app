@@ -1,0 +1,50 @@
+/* app/assets/stylesheets/explore.css */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px #ccc;
+}
+
+h1 {
+    text-align: center;
+}
+
+.folder {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.folder h2 {
+    font-size: 24px;
+}
+
+.breed-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.breed-images img {
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.folder-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.folder-list-item {
+    margin-right: 20px;
+}

@@ -1,171 +1,57 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Images from Google Cloud Storage</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images from DogFrames</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    <%= stylesheet_link_tag 'explore', media: 'all' %>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1>Collected images</h1>
 
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px 0px #ccc;
-        }
+      <!-- Search Bar -->
+      <div class="row mb-4 justify-content-center">
+        <div class="col-md-8">
+          <input class="form-control form-control-lg" type="text" id="breedSearch" placeholder="Search..." onkeyup="searchBreeds()">
+        </div>
+      </div>
+   
 
-        h1 {
-            text-align: center;
-        }
-
-        .folder {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .folder h2 {
-            font-size: 24px;
-        }
-
-        .image-col {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .image-col img {
-            max-width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .image-info p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-
-        /* New styles for the alert subscription section */
-        .alert-subscription {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .save-changes-btn {
-            margin-top: 10px;
-        }
-
-        .folder-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .folder-list-item {
-            margin-right: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Images from Google Cloud Storage</h1>
-        <div id="imageContainer" class="row"></div>
+      <% @dog_breeds.each do |breed| %>
+        <!-- Breed Section -->
+        <div class="breed-section">
+          <h2><%= breed %></h2>
+          <div class="row">
+            <% breed_folder = "DogFrames/#{breed}" %>
+            <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
+              <% image_name = File.basename(image_path, ".*") %>
+              <div class="col-md-4 col-sm-6">
+                <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
+                <p><%= image_name %></p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
+  </body>
+  <script>
+    function searchBreeds() {
+      const searchTerm = document.getElementById('breedSearch').value.toLowerCase();
 
-    <script>
-    const bucketName = 'primero1023';
-    const apiUrl = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o`;
-  
-    async function fetchImageData() {
-      const response = await fetch(apiUrl);
-      return response.json();
-    }
-  
-    function groupItemsByFolder(data) {
-      const itemsByFolder = {};
-  
-      data.items.forEach(item => {
-        const pathSegments = item.name.split('/');
-        const folderName = pathSegments[0];
-  
-        if (!itemsByFolder[folderName]) {
-          itemsByFolder[folderName] = [];
-        }
-  
-        itemsByFolder[folderName].push(item);
+      // Iterate through breed sections and reset display
+      document.querySelectorAll('.breed-section').forEach(function (breedSection) {
+        breedSection.style.display = 'none';
       });
-  
-      return itemsByFolder;
+
+      // Iterate through breed sections and show/hide based on the search term
+      document.querySelectorAll('.breed-section').forEach(function (breedSection) {
+        const breedName = breedSection.querySelector('h2').innerText.toLowerCase();
+        const regex = new RegExp(searchTerm, 'i');
+        breedSection.style.display = regex.test(breedName) ? 'block' : 'none';
+      });
     }
-  
-    function createImageElement(item) {
-      const col = document.createElement('div');
-      col.classList.add('col-md-4', 'image-col');
-  
-      const img = document.createElement('img');
-      img.src = item.mediaLink; // The URL of the image in the bucket.
-      img.classList.add('img-fluid');
-      col.appendChild(img);
-  
-      const imageInfo = document.createElement('div');
-      imageInfo.classList.add('image-info');
-  
-      const name = document.createElement('p');
-      name.innerText = 'Image Name: ' + item.name;
-      imageInfo.appendChild(name);
-  
-      const date = document.createElement('p');
-      date.innerText = 'Submitted Date: ' + new Date(item.timeCreated).toDateString();
-      imageInfo.appendChild(date);
-  
-      col.appendChild(imageInfo);
-  
-      return col;
-    }
-  
-    function renderImagesByFolder(itemsByFolder) {
-      const imageContainer = document.getElementById('imageContainer');
-  
-      for (const folderName in itemsByFolder) {
-        if (itemsByFolder.hasOwnProperty(folderName)) {
-          const folderSection = document.createElement('div');
-          folderSection.classList.add('folder');
-          folderSection.innerHTML = `<h2>${folderName}</h2>`;
-  
-          const row = document.createElement('div');
-          row.classList.add('row');
-  
-          itemsByFolder[folderName].forEach(item => {
-            if (item.contentType === 'image/jpeg') {
-              const col = createImageElement(item);
-              row.appendChild(col);
-            }
-          });
-  
-          folderSection.appendChild(row);
-          imageContainer.appendChild(folderSection);
-        }
-      }
-    }
-  
-    function handleImageFetchError(error) {
-      console.error('Error fetching image data: ', error);
-    }
-  
-    async function initialize() {
-      try {
-        const imageData = await fetchImageData();
-        const itemsByFolder = groupItemsByFolder(imageData);
-        renderImagesByFolder(itemsByFolder);
-      } catch (error) {
-        handleImageFetchError(error);
-      }
-    }
-  
-    initialize();
-</script>
-  
+  </script>
+</html>
