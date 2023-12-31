@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resource :registration
   resource :password_reset
   resource :password
+  resources :pet_submissions, only: [:new, :create, :index]
+
 
   # Defines the root path route ("/")
   root "main#index"
