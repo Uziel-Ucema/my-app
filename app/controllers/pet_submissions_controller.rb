@@ -19,6 +19,17 @@ class PetSubmissionsController < ApplicationController
     def index
       @pet_submissions = PetSubmission.all
     end
+
+    def show
+        @pet_submission = PetSubmission.find(params[:id])
+        @comment = Comment.new
+    end
+      
+    def close_case
+        @pet_submission = PetSubmission.find(params[:id])
+        @pet_submission.update(closed: true)
+        redirect_to pet_submission_path(@pet_submission)
+    end
   
     private
   

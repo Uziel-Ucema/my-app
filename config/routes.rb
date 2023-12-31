@@ -13,7 +13,13 @@ Rails.application.routes.draw do
   resource :password
   resources :pet_submissions, only: [:new, :create, :index]
 
-
+  resources :pet_submissions do
+    member do
+      put :close_case
+    end
+    resources :comments, only: [:create, :destroy]
+  end
+  
   # Defines the root path route ("/")
   root "main#index"
 end

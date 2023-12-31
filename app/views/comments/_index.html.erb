@@ -1,0 +1,8 @@
+<!-- app/views/comments/_index.html.erb -->
+<% comments.each do |comment| %>
+  <div class="card mb-2">
+    <div class="card-body">
+      <p class="card-text"><%= comment.body %></p>
+    </div>
+  </div>
+<% end %>
