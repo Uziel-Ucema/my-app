@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_31_011849) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_31_140322) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -44,7 +44,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_011849) do
     t.integer "pet_submission_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["pet_submission_id"], name: "index_comments_on_pet_submission_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -86,11 +88,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_011849) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "pet_submissions"
+  add_foreign_key "comments", "users"
   add_foreign_key "folders_users", "folders"
   add_foreign_key "folders_users", "users"
 end

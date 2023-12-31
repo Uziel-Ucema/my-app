@@ -1,10 +1,22 @@
-<%= form_with(model: [pet_submission, comment], url: pet_submission_comments_path(pet_submission), local: true) do |form| %>
-  <div class="form-group">
-    <%= form.label :body %>
-    <%= form.text_area :body, class: 'form-control' %>
-  </div>
+<% if user_signed_in? %>
+  <div class="card mt-4">
+    <div class="card-body">
+      <%= form_with(model: [pet_submission, comment], local: true) do |form| %>
+        <div class="form-group mb-3"> <!-- Adjust margin-bottom as needed -->
+          <%= form.text_area :body, class: 'form-control', placeholder: 'Write a comment...', rows: 4 %> <!-- Adjust rows as needed -->
+        </div>
 
-  <div>
-    <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
+        <div class="form-group">
+          <div class="row">
+
+            <div class="col-md-4 text-right"> <!-- Adjust the column size as needed -->
+              <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
+<% else %>
+  <p class="mt-4">Please log in to add comments</p>
 <% end %>

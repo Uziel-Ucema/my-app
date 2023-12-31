@@ -1,7 +1,13 @@
 <!-- app/views/comments/_index.html.erb -->
-<% comments.each do |comment| %>
+<% comments.order(created_at: :desc).each do |comment| %>
   <div class="card mb-2">
     <div class="card-body">
+      <h5 class="card-title">
+        <span style="font-size: small;"><%= comment.user&.username %></span> - 
+        <span style="font-size: small;" class="text-muted">
+          <%= time_ago_in_words(comment.created_at) %> ago
+        </span>
+      </h5>
       <p class="card-text"><%= comment.body %></p>
     </div>
   </div>

@@ -9,7 +9,7 @@
 #   end
 
 # Create a user with password
-user1 = User.create(email: 'as@gmail.com', password: 'asd')
+user1 = User.create(email: 'as@gmail.com', password: 'asd', username: 'michael')
 
 folder0 = Folder.create(name: 'American Bulldog')
 folder1 = Folder.create(name: 'Basset Hound')

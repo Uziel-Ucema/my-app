@@ -1,4 +1,3 @@
-# app/controllers/pet_submissions_controller.rb
 class PetSubmissionsController < ApplicationController
     before_action :authenticate_user!, only: [:new, :create]
   
@@ -21,14 +20,9 @@ class PetSubmissionsController < ApplicationController
     end
 
     def show
-        @pet_submission = PetSubmission.find(params[:id])
-        @comment = Comment.new
-    end
-      
-    def close_case
-        @pet_submission = PetSubmission.find(params[:id])
-        @pet_submission.update(closed: true)
-        redirect_to pet_submission_path(@pet_submission)
+      @pet_submission = PetSubmission.find(params[:id])
+      @comment = Comment.new
+      @comments = @pet_submission.comments
     end
   
     private

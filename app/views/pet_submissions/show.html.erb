@@ -1,18 +1,16 @@
-<div class="container mt-5">
+<div>
   <h1><%= @pet_submission.title %></h1>
   <p><%= @pet_submission.body %></p>
 
   <% if @pet_submission.image.attached? %>
-    <%= image_tag url_for(@pet_submission.image), class: 'img-fluid' %>
-  <% end %>
-
-  <% if @pet_submission.closed %>
-    <p>This case is closed. The pet has been found.</p>
-  <% else %>
-    <%= link_to "Close Case", close_case_pet_submission_path(@pet_submission), method: :put, class: "btn btn-danger" %>
+    <%= image_tag url_for(@pet_submission.image), class: 'img-fluid mx-auto d-block', style: 'max-width: 800px;' %>
   <% end %>
 
   <h2>Comments</h2>
-  <%= render 'comments/form', comment: @comment, pet_submission: @pet_submission %>
-  <%= render 'comments/index', comments: @pet_submission.comments %>
+  <%= render partial: 'comments/form', locals: { comment: @comment, pet_submission: @pet_submission } %>
+
+  <!-- Add space between form and index -->
+  <div style="margin-bottom: 20px;"></div>
+
+  <%= render partial: 'comments/index', locals: { comments: @pet_submission.comments } %>
 </div>

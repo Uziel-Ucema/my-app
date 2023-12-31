@@ -3,23 +3,18 @@ Rails.application.routes.draw do
   get 'contact', to: 'contact#new'
   post 'contact', to: 'contact#create'
   get 'explore', to: 'explore#index'
-  get "alerts", to: "alerts#index"
+  get 'alerts', to: 'alerts#index'
   post '/save_changes', to: 'alerts#save_changes'
-
 
   resource :session
   resource :registration
   resource :password_reset
   resource :password
-  resources :pet_submissions, only: [:new, :create, :index]
 
-  resources :pet_submissions do
-    member do
-      put :close_case
-    end
-    resources :comments, only: [:create, :destroy]
+  resources :pet_submissions, only: [:new, :create, :index, :show] do
+    resources :comments, only: [:create]
   end
-  
+
   # Defines the root path route ("/")
-  root "main#index"
+  root 'main#index'
 end
