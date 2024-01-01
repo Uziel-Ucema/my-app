@@ -1,0 +1,18 @@
+<!-- app/views/pet_submissions/_pet_submission_list.html.erb -->
+
+<% submissions.each do |submission| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><%= submission.title %></h5>
+      <p class="card-text"><%= submission.body %></p>
+
+      <!-- Additional details about the submission -->
+
+      <% if submission.closed %>
+        <p class="text-danger"><strong>Status:</strong> Closed</p>
+      <% else %>
+        <p class="text-success"><strong>Status:</strong> Open</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -11,9 +11,17 @@ Rails.application.routes.draw do
   resource :password_reset
   resource :password
 
-  resources :pet_submissions, only: [:new, :create, :index, :show] do
+  resources :pet_submissions do
     resources :comments, only: [:create]
   end
+
+  resources :pet_submissions do
+    member do
+      patch 'close'
+    end
+  end
+  
+  get 'user_submissions', to: 'pet_submissions#user_submissions'
 
   # Defines the root path route ("/")
   root 'main#index'

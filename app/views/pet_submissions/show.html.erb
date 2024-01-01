@@ -1,13 +1,31 @@
-<div>
+<!-- app/views/pet_submissions/show.html.erb -->
+
+<div class="container mt-4">
   <h1><%= @pet_submission.title %></h1>
   <p><%= @pet_submission.body %></p>
 
   <% if @pet_submission.image.attached? %>
-    <%= image_tag url_for(@pet_submission.image), class: 'img-fluid mx-auto d-block', style: 'max-width: 800px;' %>
+    <%= image_tag url_for(@pet_submission.image), class: 'img-fluid mx-auto d-block mb-3', style: 'max-width: 800px;' %>
   <% end %>
 
-  <h2>Comments</h2>
-  <%= render partial: 'comments/form', locals: { comment: @comment, pet_submission: @pet_submission } %>
+  <div class="mb-3">
+    <% if @pet_submission.closed %>
+      <p class="text-danger"><strong>Status:</strong> Closed</p>
+    <% else %>
+      <p class="text-success"><strong>Status:</strong> Open</p>
+      <% if current_user && @pet_submission.user == current_user %>
+        <%= form_with(model: @pet_submission, url: close_pet_submission_path(@pet_submission), method: :patch) do |form| %>
+          <%= form.submit 'Close thread', class: 'btn btn-danger' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <!-- Show comment form only if the pet submission is not closed -->
+  <% unless @pet_submission.closed %>
+    <h2 class="mb-3">Comments</h2>
+    <%= render partial: 'comments/form', locals: { comment: @comment, pet_submission: @pet_submission } %>
+  <% end %>
 
   <!-- Add space between form and index -->
   <div style="margin-bottom: 20px;"></div>
