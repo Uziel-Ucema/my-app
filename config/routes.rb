@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'alerts', to: 'alerts#index'
   post '/save_changes', to: 'alerts#save_changes'
 
+  namespace :api do
+    post '/new_picture', to: 'alerts#new_picture'
+  end  
+
   resource :session
   resource :registration
   resource :password_reset

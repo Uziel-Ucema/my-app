@@ -74,5 +74,17 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }  # Change to your actual host
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.sendgrid.net',  # Your SMTP server address
+    port: 587,
+    user_name: 'apikey',
+    password: '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',
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
 end
