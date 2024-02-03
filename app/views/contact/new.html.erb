@@ -1,8 +1,11 @@
-<div class="container mt-5">
-  <h1 class="mb-4">Contact Us</h1>
+<div>
+  <header class="text-center mt-4">
+    <h1 class="welcome-header">Contact us</h1>
+  </header>
 
-  <p class="lead mb-4">At PetConnect, we value all feedback. Your opinion matters to us. If you have any questions or suggestions, feel free to contact us using the form below.</p>
+  <p class="text-center lead mb-4">At PETCON, we value all feedback. If you have any questions or suggestions, feel free to talk with us.</p>
 
+  <section class="align-items-center>
   <%= form_with(model: @contact, url: contact_path, method: :post, class: "mb-5") do |form| %>
     <div class="mb-3">
       <%= form.label :email, class: "form-label" %>
@@ -19,8 +22,9 @@
       <%= form.text_area :message, class: "form-control" %>
     </div>
 
-    <div>
+    <div class="text-center">
       <%= form.submit "Send Message", class: "btn btn-primary" %>
     </div>
   <% end %>
+  </section>
 </div>

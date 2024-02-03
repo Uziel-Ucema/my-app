@@ -1,73 +1,47 @@
 <!-- app/views/pet_submissions/user_submissions.html.erb -->
 
-<style>
-  .user-submission-card {
-    height: 400px; /* Set a fixed height for the cards */
-    overflow: hidden;
-  }
-
-  .user-submission-img-container {
-    max-height: 60%;
-    overflow: hidden;
-  }
-
-  .user-submission-body {
-    height: 300px; /* Set a fixed height for the card bodies */
-    overflow: hidden;
-  }
-
-  .user-submission-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Adjust the number of lines for the title */
-    -webkit-box-orient: vertical;
-    word-wrap: break-word;
-    margin-bottom: 0.5rem; /* Add margin between title and body */
-  }
-
-  .user-submission-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* Adjust the number of lines for the body */
-    -webkit-box-orient: vertical;
-    word-wrap: break-word;
-  }
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css"> <!-- Link to your external stylesheet -->
+</head>
 
 <div>
-  <h1 class="mb-4">Your Open Pet Submissions</h1>
+  <header class="text-center mt-4">
+    <h1 class="mb-4">Your Open Pet Submissions</h1>
+  </header>
 
   <% if @open_submissions.any? %>
-    <div class="row">
+    <div class="card-container">
       <% @open_submissions.each do |submission| %>
-        <div class="col-md-4 mb-4">
-          <div class="card shadow h-100 user-submission-card">
-            <div class="card-body user-submission-body">
-              <%= link_to pet_submission_path(submission), class: 'user-submission-link' do %>
-                <h5 class="card-title user-submission-title"><%= submission.title %></h5>
-              <% end %>
-              <p class="card-text user-submission-text"><%= submission.body %></p>
-
-              <% if submission.image.attached? %>
-                <%= link_to pet_submission_path(submission), class: 'user-submission-link' do %>
-                  <div class="user-submission-img-container">
-                    <%= image_tag url_for(submission.image), class: 'card-img-top w-100' %>
-                  </div>
+          <div class="card mb-4 user-submission-card">
+            <div class="card shadow h-100">
+              <div class="card-body user-submission-body">
+                <%= link_to pet_submission_path(submission) do %>
+                  <h5 class="card-title user-submission-title"><%= submission.title %></h5>
                 <% end %>
-              <% end %>
+                
+                <p class="card-text user-submission-text"><%= submission.body %></p>
+
+                <% if submission.image.attached? %>
+                  <%= link_to pet_submission_path(submission) do %>
+                    <div class="user-submission-img-container">
+                      <%= image_tag url_for(submission.image), class: 'user-submission-img' %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
             </div>
           </div>
-        </div>
       <% end %>
     </div>
   <% else %>
     <p>No open pet submissions.</p>
   <% end %>
 
-  <!-- Repeat the same structure for closed submissions -->
-  <h1 class="mb-4">Your Closed Pet Submissions</h1>
+  <header class="text-center mt-4">
+    <h1 class="mb-4">Your Closed Pet Submissions</h1>
+  </header>
 
   <% if @closed_submissions.any? %>
     <div class="row">

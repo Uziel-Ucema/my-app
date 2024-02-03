@@ -1,35 +1,51 @@
-<h1>Sign Up</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag 'styles', media: 'all' %>
+</head>
+<body>
 
-<%= form_with model: @user, url: registration_path, data: { turbo: false }, local: true do |form| %>
-  <% if form.object.errors.any? %>
-    <div class="alert alert-danger">
-      <% form.object.errors.full_messages.each do |message| %>
-        <div><%= message %></div>
-      <% end %>
+  <header class="text-center mt-4">
+    <h1 class="mb-4">Sign Up</h1>
+  </header>
+
+  <section>
+  <%= form_with model: @user, url: registration_path, data: { turbo: false }, local: true do |form| %>
+    <% if form.object.errors.any? %>
+      <div class="alert alert-danger">
+        <% form.object.errors.full_messages.each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= form.label :email %>
+      <%= form.email_field :email, class: "form-control", placeholder: "example@gmail.com" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :username %>
+      <%= form.text_field :username, class: "form-control", placeholder: "username" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :password %>
+      <%= form.password_field :password, class: "form-control", placeholder: "password" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :password_confirmation %>
+      <%= form.password_field :password_confirmation, class: "form-control", placeholder: "password" %>
+    </div>
+
+    <div class="text-center">
+      <%= form.submit "Sign Up", class: "btn btn-primary" %>
     </div>
   <% end %>
+  </section>
 
-  <div class="mb-3">
-    <%= form.label :email %>
-    <%= form.email_field :email, class: "form-control", placeholder: "example@gmail.com" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :username %>
-    <%= form.text_field :username, class: "form-control", placeholder: "username" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :password %>
-    <%= form.password_field :password, class: "form-control", placeholder: "password" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "password" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.submit "Sign Up", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</body>
+</html>

@@ -1,57 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Images from DogFrames</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <%= stylesheet_link_tag 'explore', media: 'all' %>
-  </head>
-  <body>
-    <div>
-      <h1>Collected images</h1>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <%= stylesheet_link_tag 'styles', media: 'all' %>
+</head>
+<body>
+    <header class="text-center mt-4">
+        <h1 class="welcome-header">Collected images</h1>
+    </header>
 
-      <!-- Search Bar -->
-      <div class="row mb-4 justify-content-center">
+    <div class="row mb-4 justify-content-center">
         <div class="col-md-8">
-          <input class="form-control form-control-lg" type="text" id="breedSearch" placeholder="Search..." onkeyup="searchBreeds()">
+            <input class="form-control form-control-lg" type="text" id="breedSearch" placeholder="Search..." onkeyup="searchBreeds()">
         </div>
-      </div>
-   
-
-      <% @dog_breeds.each do |breed| %>
-        <!-- Breed Section -->
-        <div class="breed-section">
-          <h2><%= breed %></h2>
-          <div class="row">
-            <% breed_folder = "DogFrames/#{breed}" %>
-            <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
-              <% image_name = File.basename(image_path, ".*") %>
-              <div class="col-md-4 col-sm-6">
-                <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
-                <p><%= image_name %></p>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
     </div>
-  </body>
-  <script>
-    function searchBreeds() {
-      const searchTerm = document.getElementById('breedSearch').value.toLowerCase();
 
-      // Iterate through breed sections and reset display
-      document.querySelectorAll('.breed-section').forEach(function (breedSection) {
-        breedSection.style.display = 'none';
-      });
+    <% @dog_breeds.each do |breed| %>
+        <!-- Breed Section -->
+        <section class="breed-section">
+            <h2><%= breed %></h2>
+            <div class="row">
+                <% breed_folder = "DogFrames/#{breed}" %>
+                <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
+                    <% image_name = File.basename(image_path, ".*") %>
+                    <div class="col-md-4 col-sm-6">
+                        <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+    <% end %>
 
-      // Iterate through breed sections and show/hide based on the search term
-      document.querySelectorAll('.breed-section').forEach(function (breedSection) {
-        const breedName = breedSection.querySelector('h2').innerText.toLowerCase();
-        const regex = new RegExp(searchTerm, 'i');
-        breedSection.style.display = regex.test(breedName) ? 'block' : 'none';
-      });
-    }
-  </script>
+    <script>
+        function searchBreeds() {
+            const searchTerm = document.getElementById('breedSearch').value.toLowerCase();
+
+            document.querySelectorAll('.breed-section').forEach(function (breedSection) {
+                breedSection.style.display = 'none';
+            });
+
+            document.querySelectorAll('.breed-section').forEach(function (breedSection) {
+                const breedName = breedSection.querySelector('h2').innerText.toLowerCase();
+                const regex = new RegExp(searchTerm, 'i');
+                breedSection.style.display = regex.test(breedName) ? 'block' : 'none';
+            });
+        }
+    </script>
+
+    <!-- Bootstrap JS from CDN with integrity and crossorigin attributes -->
+    <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
 </html>

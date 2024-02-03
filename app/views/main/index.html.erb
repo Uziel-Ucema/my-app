@@ -1,30 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetConnection</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
-        main {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-        }
-        h2 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-    </style>
+    <title>PETCON</title>
+
+    <!-- Bootstrap CSS from CDN with integrity and crossorigin attributes -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Link to your custom CSS file -->
+    <%= stylesheet_link_tag 'styles', media: 'all' %>
 </head>
 <body>
-    <header class="bg-dark text-white text-center py-4 mt-4">
-        <h1>Welcome to PetConnect</h1>
+    <header class="text-center mt-4">
+        <h1>Welcome to PETCON</h1>
     </header>
 
     <main class="container">
@@ -34,15 +24,17 @@
                     <img src="/assets/found-dog.jpg" alt="Header Image" class="img-fluid">
                 </div>
                 <div class="col-lg-6">
-                    <h2 class="text-center">About PetConnect</h2>
-                    <p class="text-center">Welcome to PetConnect, your ultimate destination for reuniting lost pets with their loving owners through the power of pictures...</p>
+                    <h2 class="text-center">About Us</h2>
+                    <p>Welcome to PETCON, where technology meets compassion to address lost pets. PETCON is a tool and a community dedicated to reuniting lost dogs with their owners.</p>
+                    <p>PETCON brings people together to help families find their furry friends, offering both technological innovation and genuine empathy for the emotional challenges of losing a pet. The acronym "PETCON" symbolizes a promise—to ease the pain of separation and guide lost companions back to their caring owners.</p>
+                    <p>Think of PETCON as a virtual sanctuary, where pet owners connect, share stories, and celebrate reunions. It's a place that honors the enduring bond between humans and pets, proving that with technology and a compassionate community, the hopeful message of "You Can Find Your Companions Online Again" rings true. Welcome to PETCON, where finding lost pets becomes a collective effort, showcasing the strength of the human-animal connection.</p>
                 </div>
             </div>
         </section>
 
         <section id="mission" class="mb-5">
             <h2 class="text-center">Our Mission</h2>
-            <p class="text-center">At PetConnect, our mission is to bring solace to pet owners in times of distress by reuniting them with their lost pets...</p>
+            <p class="text-center">At PETCON, we understand the emotional challenges families face when their beloved pets go missing. Traditional search methods often lead to uncertainty and frustration. That's where PETCON steps in, harnessing the power of technology to make a real difference.</p>
         </section>
 
         <section id="how-it-began" class="mb-5">
@@ -51,37 +43,39 @@
                     <img src="/assets/dog-puppy.jpg" alt="Dog Image" class="img-fluid">
                 </div>
                 <div class="col-lg-6">
-                    <h2 class="text-center">How It All Began</h2>
-                    <p>The story of PetConnect started with a simple idea, to use the ever-present cameras around us to help lost pets find their way back home...</p>
+                    <h2 class="text-center">How does it work?</h2>
+                    <p>PETCON operates with a straightforward yet powerful methodology, leveraging advanced technology to streamline the process of reuniting lost pets with their families.</p>
+                    <p>PETCON strategically places IP cameras in locations identified as high-risk zones for pet loss. These cameras serve as vigilant watchers, capturing real-time footage of the surroundings. This real-time surveillance forms the foundation of our pet recovery approach.</p>
+                    <p>At the heart of our system are cutting-edge machine learning algorithms. These algorithms analyze the real-time images captured by our cameras with precision, identifying and classifying dog breeds for accurate data processing.</p>
+                    <p>The analyzed data seamlessly integrates into a dedicated database, accessible through our user-friendly website. This database acts as a centralized repository, making the pet recovery journey visual and accessible for users.</p>
+                    <p>Users actively participate by accessing the platform to view captured images. The visual search experience enables them to scan through the images, turning the pet recovery process into an interactive and engaging quest.</p>
+                    <p>The last personalized touch allows users to set up alerts for specific breeds. This practical feature turns our platform into a customized tool, ensuring users receive timely notifications via email when relevant images are captured.</p>
                 </div>
             </div>
         </section>
 
         <section id="how-we-work" class="mb-5">
-            <h2 class="text-center">How We Work</h2>
-            <p class="text-center">PetConnect is a platform where anyone can contribute to the cause of reuniting lost pets with their owners...</p>
+            <h2 class="text-center">More than a Platform</h2>
+            <p class="text-center">PETCON leverages the accessibility and efficiency of IP cameras strategically placed in areas prone to pet loss. Real-time surveillance, coupled with state-of-the-art machine learning algorithms, provides a unique opportunity to efficiently address the problem of finding lost dogs.
+
+Our solution involves deploying IP cameras that capture real-time images, processed by classification algorithms to identify dog breeds. The data is automatically stored in a database accessible through our dedicated website. Users can view captured images and search for their pets, with the added option to set up alerts for specific breeds, receiving email notifications as soon as relevant images are captured.</p>
         </section>
 
         <section id="our-community" class="mb-5">
             <div class="row">
                 <div class="col-lg-6">
-                    <img src="/assets/cat.jpg" alt="Cat Image" class="img-fluid">
+                    <img src="/assets/dog-comm.jpg" alt="Dog Image" class="img-fluid">
                 </div>
                 <div class="col-lg-6">
                     <h2 class="text-center">Our Community</h2>
-                    <p>At the heart of PetConnect is our compassionate and dedicated community of pet lovers, volunteers, and everyday heroes...</p>
+                    <p>In addition to its core functionality, PETCON offers a unique space on its website dedicated to fostering a sense of community among users. Here, individuals can create posts specifically addressing lost dogs, opening up a collaborative avenue for shared experiences and mutual assistance. This space becomes a vibrant hub where users can comment, share insights, and offer support in the quest to find their furry friends, creating a community bonded by a shared love for pets.</p>
+                    <p>PETCON goes beyond being a platform solely focused on finding lost pets; it's a dynamic community that values the collective strength of its users. By providing a space for users to share their stories and extend a helping hand, PETCON aims to not only bring joy and relief to pet owners but also to create a supportive network. Join us in this mission to reunite families with their cherished four-legged members and be part of a community that understands the profound connection between humans and their pets.</p>
                 </div>
             </div>
         </section>
-
-        <section id="privacy-safety" class="mb-5">
-            <h2 class="text-center">Privacy and Safety</h2>
-            <p class="text-center">PetConnect is committed to the privacy and safety of all its users.</p>
-        </section>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS from CDN with integrity and crossorigin attributes -->
+    <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

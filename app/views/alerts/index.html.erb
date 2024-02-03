@@ -8,8 +8,11 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="mt-4">Alert Subscriptions</h1>
-
+    <header class="text-center mt-4">
+      <h1 class="welcome-header">Alerts subscriptions</h1>
+    </header>
+    <p class="text-center lead mb-4">Enable alerts to receive timely notifications when PETCON captures images matching your specified pet breed and location.</p>
+    <section>
     <form action="/save_changes" method="post">
       <div class="row">
         <% @folders.each do |folder| %>
@@ -22,8 +25,11 @@
         <% end %>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
-    </form>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    </div>
+  </form>
+  </section>
   </div>
 </body>
 </html>
