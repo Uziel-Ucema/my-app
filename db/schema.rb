@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_31_140322) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_04_015841) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,6 +73,29 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_140322) do
     t.index ["user_id"], name: "index_folders_users_on_user_id"
   end
 
+  create_table "image_metadata", force: :cascade do |t|
+    t.string "breed"
+    t.string "image_name"
+    t.string "location"
+    t.string "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "locations_users", id: false, force: :cascade do |t|
+    t.integer "location_id"
+    t.integer "user_id"
+    t.index ["location_id", "user_id"], name: "index_locations_users_on_location_id_and_user_id", unique: true
+    t.index ["location_id"], name: "index_locations_users_on_location_id"
+    t.index ["user_id"], name: "index_locations_users_on_user_id"
+  end
+
   create_table "pet_submissions", force: :cascade do |t|
     t.string "title"
     t.text "body"
@@ -81,6 +104,18 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_140322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "closed"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "location_id"
+    t.integer "folder_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["folder_id"], name: "index_subscriptions_on_folder_id"
+    t.index ["location_id"], name: "index_subscriptions_on_location_id"
+    t.index ["user_id", "location_id", "folder_id"], name: "index_subscriptions_on_user_id_and_location_id_and_folder_id", unique: true
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -97,4 +132,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_140322) do
   add_foreign_key "comments", "users"
   add_foreign_key "folders_users", "folders"
   add_foreign_key "folders_users", "users"
+  add_foreign_key "subscriptions", "folders"
+  add_foreign_key "subscriptions", "locations"
+  add_foreign_key "subscriptions", "users"
 end

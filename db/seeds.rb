@@ -9,7 +9,7 @@
 #   end
 
 # Create a user with password
-user1 = User.create(email: 'as@gmail.com', password: 'asd', username: 'michael')
+user0 = User.create(email: 'as@gmail.com', password: 'asd', username: 'michael')
 
 folder0 = Folder.create(name: 'American Bulldog')
 folder1 = Folder.create(name: 'Basset Hound')
@@ -40,5 +40,9 @@ folder25 = Folder.create(name: 'Siberian Husky')
 folder26 = Folder.create(name: 'Staffordshire Bull Terrier')
 folder27 = Folder.create(name: 'Wheaten Terrier')
 folder28 = Folder.create(name: 'Yorkshire Terrier')
+
+location0 = Location.create(name: 'Belgrano')
+location1 = Location.create(name: 'Colegiales')
+location2 = Location.create(name: 'Palermo')
 
 user1.folders << folder13

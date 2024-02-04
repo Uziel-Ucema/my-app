@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get 'images/show'
   get 'contact', to: 'contact#new'
   post 'contact', to: 'contact#create'
   get 'explore', to: 'explore#index'
@@ -8,12 +8,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     post '/new_picture', to: 'alerts#new_picture'
-  end  
+  end
 
   resource :session
   resource :registration
   resource :password_reset
   resource :password
+  resources :alerts
 
   resources :pet_submissions do
     resources :comments, only: [:create]
@@ -24,9 +25,10 @@ Rails.application.routes.draw do
       patch 'close'
     end
   end
-  
-  get 'user_submissions', to: 'pet_submissions#user_submissions'
 
-  # Defines the root path route ("/")
+  get 'user_submissions', to: 'pet_submissions#user_submissions'
+  get 'breeds/:breed/:image_name', to: 'images#show', as: 'breed_image'
+  get 'explore/image', to: 'images#show', as: :explore_image
+
   root 'main#index'
 end

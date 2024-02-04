@@ -4,6 +4,11 @@ class User < ApplicationRecord
     has_many :folders_users
     has_many :pet_submissions
     has_and_belongs_to_many :folders, foreign_key: 'user_id', association_foreign_key: 'folder_id'
+    has_and_belongs_to_many :locations, join_table: :locations_users
+
+    has_many :subscriptions
+    has_many :locations, through: :subscriptions
+    has_many :folders, through: :subscriptions
 
     validates :email, presence: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "must be a valid email address!"}
     validates :username, presence: true, uniqueness: { case_sensitive: false }

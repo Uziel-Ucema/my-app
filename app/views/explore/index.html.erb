@@ -19,20 +19,24 @@
     </div>
 
     <% @dog_breeds.each do |breed| %>
-        <!-- Breed Section -->
-        <section class="breed-section">
-            <h2><%= breed %></h2>
-            <div class="row">
-                <% breed_folder = "DogFrames/#{breed}" %>
-                <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
-                    <% image_name = File.basename(image_path, ".*") %>
-                    <div class="col-md-4 col-sm-6">
-                        <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
-                    </div>
-                <% end %>
+      <!-- Breed Section -->
+      <section class="breed-section">
+        <h2><%= breed %></h2>
+        <div class="row">
+          <% breed_folder = "DogFrames/#{breed}" %>
+          <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
+            <% image_name = File.basename(image_path, ".*") %>
+            <% location, time = image_name.split('_') %>
+            <div class="col-md-4 col-sm-6">
+              <%= link_to explore_image_path(breed: breed, image_name: image_name, location: location, time: time), class: 'img-link' do %>
+                <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
+              <% end %>
             </div>
-        </section>
+          <% end %>
+        </div>
+      </section>
     <% end %>
+     
 
     <script>
         function searchBreeds() {
