@@ -19,8 +19,8 @@
                 <div style="margin-bottom: 30px;"></div>
                 <p><strong>Breed:</strong> <%= breed %></p>
                 <p><strong>Location:</strong> <%= location %></p>
-                <p><strong>Captured on:</strong> <%= Time.parse(time).strftime('%d-%m-%Y %H:%M:%S') %></p>
-            </section>
+                <p><strong>Captured on:</strong> <%= Time.strptime(time, '%Y%m%d%H%M%S%L').strftime('%d-%m-%Y %H:%M:%S') %></p>
+            </section>      
         </div>
     </div>
 

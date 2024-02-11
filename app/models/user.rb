@@ -1,9 +1,7 @@
 class User < ApplicationRecord
     has_secure_password
 
-    has_many :folders_users
     has_many :pet_submissions
-    has_and_belongs_to_many :folders, foreign_key: 'user_id', association_foreign_key: 'folder_id'
     has_and_belongs_to_many :locations, join_table: :locations_users
 
     has_many :subscriptions

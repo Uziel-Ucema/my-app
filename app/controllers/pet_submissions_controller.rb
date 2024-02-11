@@ -31,9 +31,9 @@ class PetSubmissionsController < ApplicationController
       # Check if the current user is the owner of the pet submission
       if current_user && @pet_submission.user == current_user
         @pet_submission.update(closed: true)
-        redirect_to pet_submissions_path, notice: 'Pet submission closed successfully.'
+        redirect_to user_submissions_path, notice: 'Pet submission closed successfully.'
       else
-        redirect_to pet_submissions_path, alert: 'You are not authorized to close this pet submission.'
+        redirect_to user_submissions_path, alert: 'You are not authorized to close this pet submission.'
       end
     end
 

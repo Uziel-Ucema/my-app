@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Your head content here -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 </head>
 <body>
   <div class="container">
@@ -12,19 +12,27 @@
     
     <!-- Display current subscriptions -->
     <div class="mt-4">
-      <h2 class="text-center">Current Subscriptions</h2>
-      <ul>
-        <% @user_subscriptions.each do |subscription| %>
-          <li>
-            <%= "#{subscription.folder.name} in #{subscription.location.name}" %>
-            <form action="<%= alert_path(subscription) %>" method="post" onsubmit="return confirm('Are you sure?');" style="display:inline;">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Destroy" class="btn btn-danger btn-sm" />
-            </form>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <h2 class="text-center">Current Subscriptions</h2>
+    <section class="row">
+      <% @user_subscriptions.each do |subscription| %>
+        <div class="col-md-4">
+          <ul>
+            <li>
+              <%= "#{subscription.folder.name} in #{subscription.location.name}" %>
+              <form action="<%= alert_path(subscription) %>" method="post" onsubmit="return confirm('Are you sure?');" style="display:inline;">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="btn btn-link btn-sm text-danger" style="padding: 0;">
+                  <i class="fas fa-times"></i>
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    </section>
+  </div>
+  
+    
 
     <!-- Form to choose locations and breeds -->
     <form action="/save_changes" method="post">

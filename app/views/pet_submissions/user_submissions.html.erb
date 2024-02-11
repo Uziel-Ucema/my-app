@@ -44,20 +44,20 @@
   </header>
 
   <% if @closed_submissions.any? %>
-    <div class="row">
+    <div class="card-container">
       <% @closed_submissions.each do |submission| %>
-        <div class="col-md-4 mb-4">
-          <div class="card shadow h-100 user-submission-card">
+        <div class="card mb-4 user-submission-card">
+          <div class="card shadow h-100">
             <div class="card-body user-submission-body">
-              <%= link_to pet_submission_path(submission), class: 'user-submission-link' do %>
+              <%= link_to pet_submission_path(submission) do %>
                 <h5 class="card-title user-submission-title"><%= submission.title %></h5>
               <% end %>
               <p class="card-text user-submission-text"><%= submission.body %></p>
 
               <% if submission.image.attached? %>
-                <%= link_to pet_submission_path(submission), class: 'user-submission-link' do %>
+                <%= link_to pet_submission_path(submission) do %>
                   <div class="user-submission-img-container">
-                    <%= image_tag url_for(submission.image), class: 'card-img-top w-100' %>
+                    <%= image_tag url_for(submission.image), class: 'user-submission-img' %>
                   </div>
                 <% end %>
               <% end %>

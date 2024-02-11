@@ -5,55 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Images from DogFrames</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <%= stylesheet_link_tag 'styles', media: 'all' %>
+    <link href="<%= asset_path('styles.css') %>" rel="stylesheet">
 </head>
 <body>
     <header class="text-center mt-4">
         <h1 class="welcome-header">Collected images</h1>
     </header>
 
-    <div class="row mb-4 justify-content-center">
-        <div class="col-md-8">
-            <input class="form-control form-control-lg" type="text" id="breedSearch" placeholder="Search..." onkeyup="searchBreeds()">
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-5 mb-4">
+            <input class="form-control form-control-lg" type="text" id="breedSearch" placeholder="Search by Breed..." onkeyup="filterImages()">
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <section class="col-md-6 mb-4">
+            <div id="locationCheckboxes" class="d-flex justify-content-between align-items-center">
+            </div>
+          </section>
         </div>
     </div>
 
     <% @dog_breeds.each do |breed| %>
-      <!-- Breed Section -->
-      <section class="breed-section">
-        <h2><%= breed %></h2>
-        <div class="row">
-          <% breed_folder = "DogFrames/#{breed}" %>
-          <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
-            <% image_name = File.basename(image_path, ".*") %>
-            <% location, time = image_name.split('_') %>
-            <div class="col-md-4 col-sm-6">
-              <%= link_to explore_image_path(breed: breed, image_name: image_name, location: location, time: time), class: 'img-link' do %>
-                <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
-              <% end %>
+        <!-- Breed Section -->
+        <section class="breed-section">
+            <h2><%= breed %></h2>
+            <div class="row">
+                <% breed_folder = "DogFrames/#{breed}" %>
+                <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
+                    <% image_name = File.basename(image_path, ".*") %>
+                    <% location, time = image_name.split('_') %>
+                    <div class="col-md-4 col-sm-6" data-location="<%= location %>">
+                        <%= link_to explore_image_path(breed: breed, image_name: image_name, location: location, time: time), class: 'img-link' do %>
+                            <!-- Ensure correct image path -->
+                            <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>
+                        <% end %>
+                    </div>
+                <% end %>
             </div>
-          <% end %>
-        </div>
-      </section>
+        </section>
     <% end %>
      
-
     <script>
-        function searchBreeds() {
-            const searchTerm = document.getElementById('breedSearch').value.toLowerCase();
+      function filterImages() {
+          const searchTerm = document.getElementById('breedSearch').value.toLowerCase();
+          const selectedLocations = Array.from(document.querySelectorAll('input[name="locationCheckbox"]:checked')).map(checkbox => checkbox.value.toLowerCase());
 
-            document.querySelectorAll('.breed-section').forEach(function (breedSection) {
-                breedSection.style.display = 'none';
-            });
+          document.querySelectorAll('.breed-section').forEach(function (breedSection) {
+              const breedName = breedSection.querySelector('h2').innerText.toLowerCase();
+              const breedImages = breedSection.querySelectorAll('div[data-location]');
+              let displayBreedSection = false;
 
-            document.querySelectorAll('.breed-section').forEach(function (breedSection) {
-                const breedName = breedSection.querySelector('h2').innerText.toLowerCase();
-                const regex = new RegExp(searchTerm, 'i');
-                breedSection.style.display = regex.test(breedName) ? 'block' : 'none';
-            });
-        }
+              breedImages.forEach(function(image) {
+                  const location = image.getAttribute('data-location').toLowerCase();
+                  const breedMatch = breedName.includes(searchTerm);
+                  const locationMatch = selectedLocations.length === 0 || selectedLocations.includes(location);
+
+                  if (breedMatch && locationMatch) {
+                      image.style.display = 'block'; // Show images that match breed and selected location
+                      displayBreedSection = true; // Set displayBreedSection to true if at least one image matches
+                  } else {
+                      image.style.display = 'none'; // Hide images that do not match
+                  }
+              });
+
+              breedSection.style.display = displayBreedSection ? 'block' : 'none'; // Show/hide breed section based on matching images
+          });
+      }
+
+      // Function to capitalize the first letter of a string
+      function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      // Function to dynamically populate location checkboxes
+      function populateLocationCheckboxes() {
+          const locations = new Set();
+          document.querySelectorAll('div[data-location]').forEach(function(image) {
+              const location = image.getAttribute('data-location');
+              locations.add(location);
+          });
+
+          const locationCheckboxes = document.getElementById('locationCheckboxes');
+          locations.forEach(function(location) {
+              const capitalizedLocation = capitalizeFirstLetter(location); // Capitalize the first letter
+              const checkbox = document.createElement('input');
+              checkbox.setAttribute('type', 'checkbox');
+              checkbox.setAttribute('name', 'locationCheckbox');
+              checkbox.setAttribute('value', location);
+              checkbox.setAttribute('id', location);
+              checkbox.classList.add('form-check-input');
+              checkbox.addEventListener('change', filterImages);
+
+              const label = document.createElement('label');
+              label.setAttribute('for', location);
+              label.innerText = capitalizedLocation; // Use the capitalized location name
+              label.classList.add('form-check-label');
+
+              const div = document.createElement('div');
+              div.classList.add('form-check');
+              div.appendChild(checkbox);
+              div.appendChild(label);
+
+              locationCheckboxes.appendChild(div);
+          });
+      }
+
+      populateLocationCheckboxes();
     </script>
 
+    
     <!-- Bootstrap JS from CDN with integrity and crossorigin attributes -->
     <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

@@ -5,26 +5,30 @@
 
   <p class="text-center lead mb-4">At PETCON, we value all feedback. If you have any questions or suggestions, feel free to talk with us.</p>
 
-  <section class="align-items-center>
-  <%= form_with(model: @contact, url: contact_path, method: :post, class: "mb-5") do |form| %>
-    <div class="mb-3">
-      <%= form.label :email, class: "form-label" %>
-      <%= form.email_field :email, class: "form-control" %>
-    </div>
+  <section class="align-items-center">
+    <%= form_with(model: @contact, url: contact_path, method: :post, class: "mb-5") do |form| %>
+      <div class="mb-3">
+        <%= form.label :email, class: "form-label" %>
+        <% if user_signed_in? %>
+          <%= form.email_field :email, value: Current.user.email, class: "form-control", readonly: true %>
+        <% else %>
+          <%= form.email_field :email, class: "form-control" %>
+        <% end %>
+      </div>
 
-    <div class="mb-3">
+      <div class="mb-3">
         <%= form.label :subject, class: "form-label" %>
         <%= form.text_field :subject, class: "form-control" %>
-    </div>
+      </div>
 
-    <div class="mb-3">
-      <%= form.label :message, class: "form-label" %>
-      <%= form.text_area :message, class: "form-control" %>
-    </div>
+      <div class="mb-3">
+        <%= form.label :message, class: "form-label" %>
+        <%= form.text_area :message, class: "form-control" %>
+      </div>
 
-    <div class="text-center">
-      <%= form.submit "Send Message", class: "btn btn-primary" %>
-    </div>
-  <% end %>
+      <div class="text-center">
+        <%= form.submit "Send Message", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </section>
 </div>
