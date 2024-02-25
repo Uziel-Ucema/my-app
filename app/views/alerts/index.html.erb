@@ -32,10 +32,8 @@
     </section>
   </div>
   
-    
-
     <!-- Form to choose locations and breeds -->
-    <form action="/save_changes" method="post">
+    <form id="subscriptionForm" action="/save_changes" method="post" onsubmit="return validateForm()">
       <h2 class="text-center">Locations</h2>
       <section>
         <div class="row mt-3">
@@ -69,5 +67,24 @@
       </div>
     </form>
   </div>
+
+  <script>
+    function validateForm() {
+      var locationsChecked = document.querySelectorAll('input[name="locations[]"]:checked').length;
+      var breedsChecked = document.querySelectorAll('input[name="folders[]"]:checked').length;
+
+      if (locationsChecked === 0) {
+        alert("Please select at least one location.");
+        return false;
+      }
+
+      if (breedsChecked === 0) {
+        alert("Please select at least one breed.");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
 </body>
 </html>

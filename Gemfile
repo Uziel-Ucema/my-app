@@ -45,6 +45,8 @@ gem "bootsnap", require: false
 
 gem 'letter_opener'
 gem 'sendgrid-ruby'
+gem 'rails-erd'
+gem 'railroady'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

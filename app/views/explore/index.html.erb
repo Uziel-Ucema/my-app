@@ -35,7 +35,7 @@
                 <% Dir.glob("app/assets/images/#{breed_folder}/*").each do |image_path| %>
                     <% image_name = File.basename(image_path, ".*") %>
                     <% location, time = image_name.split('_') %>
-                    <div class="col-md-4 col-sm-6" data-location="<%= location %>">
+                    <div class="col-md-4 col-sm-6" data-location="<%= location %>" style="margin-bottom: 20px;">
                         <%= link_to explore_image_path(breed: breed, image_name: image_name, location: location, time: time), class: 'img-link' do %>
                             <!-- Ensure correct image path -->
                             <%= image_tag("#{breed_folder}/#{File.basename(image_path)}", class: 'img-fluid') %>

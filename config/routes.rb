@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get 'user_submissions', to: 'pet_submissions#user_submissions'
   get 'breeds/:breed/:image_name', to: 'images#show', as: 'breed_image'
   get 'explore/image', to: 'images#show', as: :explore_image
+  get '/faq', to: 'faq#index'
 
   root 'main#index'
 end
